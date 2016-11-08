@@ -66,9 +66,9 @@ public class BlacklistNamedItems extends JavaPlugin implements Listener {
 						ItemMeta itemMeta = stack.getItemMeta();
 						String displayName = ChatColor.translateAlternateColorCodes('&', itemMeta.getDisplayName());
 						if ((translatedList.contains(displayName)) && (!hasPermission(player, Permission.WORKBENCH))) {
-							player.sendMessage(RED + "You cannot craft items with the following display names:");
-							String joined = String.join(", ", translatedList);
-							player.sendMessage(RED + "(" + joined + ")");
+							player.sendMessage(RED + "You cannot workbench these items with the following display names:");
+							String joined = String.join(ChatColor.RESET + ", " + ChatColor.RESET, translatedList);
+							player.sendMessage(RED + "(" + joined + RED + ")");
 							e.getInventory().setResult(new ItemStack(Material.AIR));
 						}
 					}
@@ -86,24 +86,23 @@ public class BlacklistNamedItems extends JavaPlugin implements Listener {
 		if (e.getCurrentItem() != null) {
 			ItemStack item = e.getCurrentItem();
 			InventoryType type = e.getInventory().getType();
-			if (item.hasItemMeta()) {
-				ItemMeta itemMeta = item.getItemMeta();
-				String displayName = ChatColor.translateAlternateColorCodes('&', itemMeta.getDisplayName());
+			if (item.hasItemMeta() && item.getItemMeta().getDisplayName() != null) {
+				String displayName  = ChatColor.translateAlternateColorCodes('&', item.getItemMeta().getDisplayName());
 				if (translatedList.contains(displayName)) {
 					switch (type) {
 					case FURNACE:
 						if (!hasPermission(player, Permission.SMELT)) {
 							player.sendMessage(RED + "You cannot smelt items with the following display names:");
-							String joined = String.join(", ", translatedList);
-							player.sendMessage(RED + "(" + joined + ")");
+							String joined = String.join(ChatColor.RESET + ", " + ChatColor.RESET, translatedList);
+							player.sendMessage(RED + "(" + joined + RED + ")");
 							e.setCancelled(true);
 						}
 						break;
 					case BREWING:
 						if (!hasPermission(player, Permission.BREW)) {
 							player.sendMessage(RED + "You cannot brew items with the following display names:");
-							String joined = String.join(", ", translatedList);
-							player.sendMessage(RED + "(" + joined + ")");
+							String joined = String.join(ChatColor.RESET + ", " + ChatColor.RESET, translatedList);
+							player.sendMessage(RED + "(" + joined + RED + ")");
 							e.setCancelled(true);
 						}
 						break;
